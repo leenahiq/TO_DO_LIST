@@ -4,7 +4,7 @@ import Input from './compnents/Input';
 
 test("renders the header", () => {
   render(<Input />);
-  const linkElement = screen.getByText(/Todo List/i);
+  const linkElement = screen.getByText(/To Do List/i);
   expect(linkElement).toBeInTheDocument();
 });
 test("render the submit button", () => {
@@ -19,20 +19,20 @@ test("render one submit button", () => {
 });
 
 
-// test("fireEevent submit button", () => {
-//   render(<Input />);
-//   const submitButton = screen.getByText(/Add Todo/i);
-//   fireEvent.click(submitButton);
-//   const deleteButton = screen.getAllByText(/Delete/i);
-//   expect(deleteButton).toBeInTheDocument();
-// });
+test("fireEevent submit button", () => {
+  render(<Input />);
+  const submitButton = screen.getByText(/Add Todo/i);
+  fireEvent.click(submitButton);
+  const deleteButton = screen.getAllByText(/Delete/i);
+  expect(deleteButton).toBeInTheDocument();
+});
 
-// test("input value is rendered", () => {
-//   render(<App />);
-//   const inputElement = screen.getByPlaceholderText("ADD YOUR TASK");
-//   fireEvent.change(inputElement, { target: { value: "get food"} });
-//   expect(inputElement.value).toBe("get food");
-// });
+test("input value is rendered", () => {
+  render(<App />);
+  const inputElement = screen.getByPlaceholderText("ADD YOUR TASK");
+  fireEvent.change(inputElement, { target: { value: "get food"} });
+  expect(inputElement.value).toBe("get food");
+});
 
 test("input value is rendered", () => {
   render(<App />);

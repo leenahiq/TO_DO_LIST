@@ -4,11 +4,12 @@ import "./App.css";
 import Input from "./compnents/Input";
 
 const App = () => {
+  // created hooks to set value
   const [todos, setTodos] = React.useState([]);
   const [todo, setTodo] = React.useState("");
   const [todoEditing, setTodoEditing] = React.useState(null);
   const [editingText, setEditingText] = React.useState("");
-
+  // functions to store value on display and after editing and stop diappering on refresh
   React.useEffect(() => {
     const json = localStorage.getItem("todos");
     const loadedTodos = JSON.parse(json);
@@ -21,24 +22,25 @@ const App = () => {
     const json = JSON.stringify(todos);
     localStorage.setItem("todos", json);
   }, [todos]);
- // these code tried to transfer to separate component Input js
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  
-  //   const newTodo = {
-  //     id: new Date().getTime(),
-  //     text: todo,
-  //     completed: false,
-  //   };
-  //   setTodos([...todos].concat(newTodo));
-  //   setTodo("");
-  // }
+  //function to add item in list
+  // id is good practice when have multyple item in array
+  function handleSubmit(e) {
+    e.preventDefault();
 
+    const newTodo = {
+      id: new Date().getTime(),
+      text: todo,
+      completed: false,
+    };
+    setTodos([...todos].concat(newTodo));
+    setTodo("");
+  }
+  // function for delete button
   function deleteTodo(id) {
     let updatedTodos = [...todos].filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
   }
-
+  //function complete check button
   function toggleComplete(id) {
     let updatedTodos = [...todos].map((todo) => {
       if (todo.id === id) {
@@ -48,7 +50,7 @@ const App = () => {
     });
     setTodos(updatedTodos);
   }
-
+  // function for  Edit and  update value  button
   function submitEdits(id) {
     const updatedTodos = [...todos].map((todo) => {
       if (todo.id === id) {
@@ -61,54 +63,20 @@ const App = () => {
   }
 
   return (
-    <div className="wrap">
-      <div id="todo-list">
-      <div>
-      <Input/>
-      {/* these code transfered to Input component and import <Imput/> insted but it stopped working  */}
-        {/* <h1>Todo List</h1>
-    
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            onChange={(e) => setTodo(e.target.value)}
-            value={todo}
-          />
-          <button type="submit">Add Todo</button>
-        </form> */}
-        </div>
-        {todos.map((todo) => (
-          <div key={todo.id} className="todo">
-            <div className="todo-text">
-              <input
-                type="checkbox"
-                id="completed"
-                checked={todo.completed}
-                onChange={() => toggleComplete(todo.id)}
-              />
-              {todo.id === todoEditing ? (
-                <input
-                  type="text"
-                  onChange={(e) => setEditingText(e.target.value)}
-                />
-              ) : (
-                <div>{todo.text}</div>
-              )}
-            </div>
-            <div className="todo-actions">
-              {todo.id === todoEditing ? (
-                <button onClick={() => submitEdits(todo.id)}>
-                  Submit Edits
-                </button>
-              ) : (
-                <button onClick={() => setTodoEditing(todo.id)}>Edit</button>
-              )}
-
-              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div>
+      {/* input component imported from Input.jsx */}
+      <Input
+        handleSubmit={handleSubmit}
+        setTodo={setTodo}
+        todos={todos}
+        todo={todo}
+        toggleComplete={toggleComplete}
+        todoEditing={todoEditing}
+        setEditingText={setEditingText}
+        submitEdits={submitEdits}
+        setTodoEditing={setTodoEditing}
+        deleteTodo={deleteTodo}
+      />
     </div>
   );
 };
